@@ -1,0 +1,25 @@
+# docker-compose.yaml
+version : '2'
+services :
+ web :
+  image : odoo:12.0
+  depends_on :
+   - db
+  ports :
+   - "8069:8069"
+  volumes :
+   - ${ODOO_WEB_DATA}:/var/lib/odoo
+   - ${ODOO_CONFIG}:/etc/odoo
+   - ${ODOO_ADDONS}:/mnt/extra-addons
+  environment :
+    HOST : db
+    USER : ${POSTGRES_USER}
+    PASSWORD : ${POSTGRES_PASSWORD}
+ db :
+  image : postgres:10
+  volumes :
+   - ${POSTGRESS_DATA}:/var/lib/postgresql
+  environment :
+    POSTGRES_DB : ${POSTGRES_DB}
+    POSTGRES_PASSWORD : ${POSTGRES_PASSWORD}
+    POSTGRES_USER : ${POSTGRES_USER}
